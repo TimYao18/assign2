@@ -269,7 +269,6 @@ void draw() {
       image(fighter, fighterX, fighterY);
       image(treasure, treasureX, treasureY);
       image(enemy, enemyX+=ENEMY_SPEED, enemyY+=enemySpeedY);
-      println(enemyX, enemyY, enemySpeedY);
       break;
 
     case GAME_LOSE:
