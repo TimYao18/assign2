@@ -9,7 +9,7 @@ final int HIT_NONE = 0;
 final int HIT_ENEMY = 1;
 final int HIT_TREASURE = 2;
 
-final int HP_POINT_DEFAULT = 20;
+final int HP_POINT_DEFAULT = 50;
 final int HP_POINT_MAX = 100;
 final int HP_POINT_HIT = 20;
 final int HP_POINT_ENERGY = 10;
@@ -34,6 +34,7 @@ final int HP_HEIGHT = 20;
 // speed
 final int BACKGROUND_SPEED = 2;
 final int ENEMY_SPEED = 5;
+final float ENEMY_SPEED_ACC = 0.3;
 final int FIGHTER_SPEED = 5;
 
 
@@ -41,6 +42,7 @@ final int FIGHTER_SPEED = 5;
 // variables
 int gameState;
 float enemySpeedY;
+
   // positions
 int bg1RX;
 int bg2RX;
@@ -255,10 +257,14 @@ void draw() {
       // enemy move toward fighter
       if (fighterY + FIGHTER_SIZE/2 > enemyY + ENEMY_SIZE/2) {
         // fighter is below enemy
-        enemySpeedY+=0.2;
+        enemySpeedY+=ENEMY_SPEED_ACC;
+        if (enemySpeedY >= ENEMY_SPEED)
+            enemySpeedY = ENEMY_SPEED;
       } else if (fighterY + FIGHTER_SIZE/2 < enemyY + ENEMY_SIZE/2) {
         // fighter is above enemy
-        enemySpeedY-=0.2;
+        enemySpeedY-=ENEMY_SPEED_ACC;
+        if (enemySpeedY <= -ENEMY_SPEED)
+            enemySpeedY = -ENEMY_SPEED;
       }
 
       // hpRed shoud draw before hp
@@ -283,6 +289,14 @@ void draw() {
           hpPoint = HP_POINT_DEFAULT;
           gameState = GAME_RUN;
           enemySpeedY = 0;
+
+          // reset enemy
+          enemyX = 0; // from left side
+          enemyY = floor(random(height-ENEMY_SIZE));        
+
+          // reset fighter
+          fighterX = floor(random(width-FIGHTER_SIZE));
+          fighterY = floor(random(height-FIGHTER_SIZE));
         }
       }
       else {
